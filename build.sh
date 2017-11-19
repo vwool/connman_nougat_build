@@ -105,25 +105,41 @@ git am ../patches/connman.patch.d/* || exit 1
 make $EXTRA_MAKE_PARAMS
 )
 
-INSTALL_ARTIFACTS="\
+INSTALL_LIBS="\
 	lib/libiconv.so.2 \
 	lib/libdbus-1.so.3 \
 	lib/libintl.so.8 \
 	lib/libreadline.so.6"
 
+INSTALL_PROGRAMS="\
+	bin/dbus-daemon \
+	bin/dbus-cleanup-sockets \
+	bin/dbus-launch \
+	bin/dbus-monitor \
+	bin/dbus-send"
+
 INSTALL_CONNMAND="\
 	connman/client/connmanctl \
 	connman/src/connmand"
 
+LIBDIR="/system/lib"
+if [ "${ANDROID_ARCH}" = "arm64" ]; then
+	LIBDIR="/system/lib64"
+fi
+
 cp -r files/trg install
-mkdir -p install/system/lib
+mkdir -p install/$LIBDIR
 mkdir -p install/system/bin
 
-for f in $INSTALL_ARTIFACTS; do
-	cp ${PREFIX}/$f install/system/lib
+for f in $INSTALL_LIBS; do
+	cp ${PREFIX}/$f install/$LIBDIR || exit 1
+done
+
+for f in $INSTALL_PROGRAMS; do
+	cp ${PREFIX}/$f install/system/bin || exit 1
 done
 
 for f in $INSTALL_CONNMAND; do
-	cp $f install/system/bin
+	cp $f install/system/bin || exit 1
 done
 
