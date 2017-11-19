@@ -1,0 +1,28 @@
+From 03ed39fbaccbb8dad711c56817aa0b85ed2ad167 Mon Sep 17 00:00:00 2001
+From: Naveen Singh <naveen@nestlabs.com>
+Date: Mon, 30 Oct 2017 23:25:07 +0100
+Subject: [PATCH 08/12] resolver: MAXDNSSRCH definition for android
+
+MAXDNSSRCH is defined in resolv_params.h in bionic. This commit includes
+this file for android compilation.
+---
+ src/resolver.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/src/resolver.c b/src/resolver.c
+index 75ea5ba6..2f85b4bf 100644
+--- a/src/resolver.c
++++ b/src/resolver.c
+@@ -32,6 +32,9 @@
+ #include <sys/stat.h>
+ #include <resolv.h>
+ #include <netdb.h>
++#ifdef ANDROID_COMPILE
++#include <resolv_params.h>
++#endif
+ 
+ #include "connman.h"
+ 
+-- 
+2.11.0
+

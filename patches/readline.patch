@@ -1,0 +1,89 @@
+diff --git a/config.h b/config.h
+index bf5351e..38bf3f4 100644
+--- a/config.h
++++ b/config.h
+@@ -5,7 +5,7 @@
+    characters, even if the OS supports them. */
+ /* #undef NO_MULTIBYTE_SUPPORT */
+ 
+-#define _FILE_OFFSET_BITS 64
++/* #undef _FILE_OFFSET_BITS */
+ 
+ /* Define if on MINIX.  */
+ /* #undef _MINIX */
+@@ -94,7 +94,7 @@
+ #define HAVE_STRCASECMP 1
+ 
+ /* Define if you have the strcoll function.  */
+-#define HAVE_STRCOLL 1
++/* #undef HAVE_STRCOLL */
+ 
+ /* #undef STRCOLL_BROKEN */
+ 
+@@ -185,7 +185,7 @@
+ /* #undef HAVE_SYS_STREAM_H */
+ 
+ /* Define if you have the <termcap.h> header file.  */
+-/* #undef HAVE_TERMCAP_H */
++#define HAVE_TERMCAP_H 1
+ 
+ /* Define if you have the <termio.h> header file.  */
+ #define HAVE_TERMIO_H 1
+@@ -222,7 +222,7 @@
+ /* Definitions pulled in from aclocal.m4. */
+ #define VOID_SIGHANDLER 1
+ 
+-#define GWINSZ_IN_SYS_IOCTL 1
++/* #undef GWINSZ_IN_SYS_IOCTL */
+ 
+ #define STRUCT_WINSIZE_IN_SYS_IOCTL 1
+ 
+@@ -248,7 +248,7 @@
+ 
+ /* #undef MUST_REINSTALL_SIGHANDLERS */
+ 
+-#define HAVE_POSIX_SIGSETJMP 1
++/* #undef HAVE_POSIX_SIGSETJMP */
+ 
+ /* #undef CTYPE_NON_ASCII */
+ 
+@@ -269,4 +269,3 @@
+ #    define USE_VARARGS
+ #  endif
+ #endif
+-
+diff --git a/support/config.sub b/support/config.sub
+index d07267e..9a1564c 100644
+--- a/support/config.sub
++++ b/support/config.sub
+@@ -239,7 +239,7 @@ case $basic_machine in
+ 	1750a | 580 \
+ 	| a29k \
+ 	| alpha | alphaev[4-8] | alphaev56 | alphaev6[78] | alphapca5[67] \
+-	| alpha64 | alpha64ev[4-8] | alpha64ev56 | alpha64ev6[78] | alpha64pca5[67] \
++	| aarch64 | alpha64 | alpha64ev[4-8] | alpha64ev56 | alpha64ev6[78] | alpha64pca5[67] \
+ 	| am33_2.0 \
+ 	| arc | arm | arm[bl]e | arme[lb] | armv[2345] | armv[345][lb] | avr | avr32 \
+ 	| bfin \
+@@ -319,7 +319,7 @@ case $basic_machine in
+ 	| alpha-* | alphaev[4-8]-* | alphaev56-* | alphaev6[78]-* \
+ 	| alpha64-* | alpha64ev[4-8]-* | alpha64ev56-* | alpha64ev6[78]-* \
+ 	| alphapca5[67]-* | alpha64pca5[67]-* | arc-* \
+-	| arm-*  | armbe-* | armle-* | armeb-* | armv*-* \
++	| aarch64-* | arm-*  | armbe-* | armle-* | armeb-* | armv*-* \
+ 	| avr-* | avr32-* \
+ 	| bfin-* | bs2000-* \
+ 	| c[123]* | c30-* | [cjt]90-* | c4x-* | c54x-* | c55x-* | c6x-* \
+diff --git a/terminal.c b/terminal.c
+index f8c2f6e..2f10861 100644
+--- a/terminal.c
++++ b/terminal.c
+@@ -96,7 +96,7 @@ static char *term_string_buffer = (char *)NULL;
+ 
+ static int tcap_initialized;
+ 
+-#if !defined (__linux__) && !defined (NCURSES_VERSION)
++#if (!defined (__linux__) && !defined (NCURSES_VERSION)) || defined(ANDROID)
+ #  if defined (__EMX__) || defined (NEED_EXTERN_PC)
+ extern 
+ #  endif /* __EMX__ || NEED_EXTERN_PC */

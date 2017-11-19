@@ -1,0 +1,6 @@
+[D-BUS Service]
+Name=net.connman
+Exec=/system/bin/connmand -n -c /system/etc/connman/main.conf -i wlan0
+User=root
+SystemdService=connman.service
+

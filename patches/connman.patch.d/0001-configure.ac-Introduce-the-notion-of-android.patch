@@ -1,0 +1,47 @@
+From 868b30f56333c72f5199039575a2ca5c9206a80e Mon Sep 17 00:00:00 2001
+From: Naveen Singh <naveen@nestlabs.com>
+Date: Mon, 30 Oct 2017 22:58:39 +0100
+Subject: [PATCH 01/12] configure.ac: Introduce the notion of android
+
+This change is targeted towards detecting whether connman is compiled
+for android. It does this by finding if host option passed to configure
+has "android" in it. If it finds it makes two variables ANDROID and
+ANDROID_COMPILE as 1. The first variable can be used in Makefile.am for
+including different set of libraries (because of difference between
+bionic and glibc). The second variable, ANDROID_COMPILE gets added into
+config.h and then can be used in C code to conditionally compile android
+specific code.
+---
+ configure.ac | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/configure.ac b/configure.ac
+index 74a05018..bd670180 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -35,6 +35,22 @@ AC_PROG_LIBTOOL
+ 
+ gl_CONFIGMAKE_PREP
+ 
++android_compile=no
++AC_MSG_CHECKING([check for android])
++
++	case "${host}" in
++		*android*)
++			android_compile=yes
++		;;
++	esac
++
++AC_MSG_RESULT(${android_compile})
++AM_CONDITIONAL([ANDROID], test "${android_compile}" = "yes")
++
++if (test "${android_compile}" = "yes"); then
++	AC_DEFINE([ANDROID_COMPILE], 1, [android environment compilation])
++fi
++
+ AC_ARG_ENABLE(optimization, AC_HELP_STRING([--disable-optimization],
+ 			[disable code optimization through compiler]), [
+ 	if (test "${enableval}" = "no"); then
+-- 
+2.11.0
+

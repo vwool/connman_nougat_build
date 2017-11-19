@@ -1,0 +1,35 @@
+From ee5bf57d646f91973b89e2f4a50b32aef3763273 Mon Sep 17 00:00:00 2001
+From: Naveen Singh <naveen@nestlabs.com>
+Date: Mon, 30 Oct 2017 23:11:58 +0100
+Subject: [PATCH 04/12] Makefile.am:libresolv.so and librt.so to be included
+ only in Linux build
+
+src_connmand_LDADD was adding libresolv.so and librt.so unconditionally.
+Since these libraries are not present in android, this commit include
+these libraries only if connman is built for Linux.
+---
+ Makefile.am | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index 6928feed..509347d4 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -130,9 +130,11 @@ src_connmand_SOURCES = $(gdhcp_sources) $(gweb_sources) $(backtrace_sources) \
+ 			src/peer_service.c src/machine.c src/util.c
+ 
+ src_connmand_LDADD = gdbus/libgdbus-internal.la $(builtin_libadd) \
+-			@GLIB_LIBS@ @DBUS_LIBS@ @GNUTLS_LIBS@ \
+-			-lresolv -ldl -lrt
+-
++			@GLIB_LIBS@ @DBUS_LIBS@ @XTABLES_LIBS@ @GNUTLS_LIBS@ \
++			-ldl
++if !ANDROID
++src_connmand_LDADD += -lresolv -lrt
++endif
+ src_connmand_LDFLAGS = -Wl,--export-dynamic \
+ 				-Wl,--version-script=$(srcdir)/src/connman.ver
+ 
+-- 
+2.11.0
+

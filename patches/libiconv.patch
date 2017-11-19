@@ -1,0 +1,60 @@
+diff -uNr a/build-aux/config.sub b/build-aux/config.sub
+--- a/build-aux/config.sub	2009-06-21 14:17:33.000000000 +0300
++++ b/build-aux/config.sub	2017-11-01 00:40:59.708977933 +0200
+@@ -242,7 +242,7 @@
+ 	| alpha | alphaev[4-8] | alphaev56 | alphaev6[78] | alphapca5[67] \
+ 	| alpha64 | alpha64ev[4-8] | alpha64ev56 | alpha64ev6[78] | alpha64pca5[67] \
+ 	| am33_2.0 \
+-	| arc | arm | arm[bl]e | arme[lb] | armv[2345] | armv[345][lb] | avr | avr32 \
++	| arc | arm | aarch64 | arm[bl]e | arme[lb] | armv[2345] | armv[345][lb] | avr | avr32 \
+ 	| bfin \
+ 	| c4x | clipper \
+ 	| d10v | d30v | dlx | dsp16xx \
+@@ -321,7 +321,7 @@
+ 	| alpha-* | alphaev[4-8]-* | alphaev56-* | alphaev6[78]-* \
+ 	| alpha64-* | alpha64ev[4-8]-* | alpha64ev56-* | alpha64ev6[78]-* \
+ 	| alphapca5[67]-* | alpha64pca5[67]-* | arc-* \
+-	| arm-*  | armbe-* | armle-* | armeb-* | armv*-* \
++	| aarch64-* | arm-*  | armbe-* | armle-* | armeb-* | armv*-* \
+ 	| avr-* | avr32-* \
+ 	| bfin-* | bs2000-* \
+ 	| c[123]* | c30-* | [cjt]90-* | c4x-* | c54x-* | c55x-* | c6x-* \
+diff -uNr a/libcharset/build-aux/config.sub b/libcharset/build-aux/config.sub
+--- a/libcharset/build-aux/config.sub	2009-06-21 14:17:33.000000000 +0300
++++ b/libcharset/build-aux/config.sub	2017-11-01 00:42:23.428809579 +0200
+@@ -240,7 +240,7 @@
+ 	| alpha | alphaev[4-8] | alphaev56 | alphaev6[78] | alphapca5[67] \
+ 	| alpha64 | alpha64ev[4-8] | alpha64ev56 | alpha64ev6[78] | alpha64pca5[67] \
+ 	| am33_2.0 \
+-	| arc | arm | arm[bl]e | arme[lb] | armv[2345] | armv[345][lb] | avr \
++	| arc | aarch64| arm | arm[bl]e | arme[lb] | armv[2345] | armv[345][lb] | avr \
+ 	| bfin \
+ 	| c4x | clipper \
+ 	| d10v | d30v | dlx | dsp16xx \
+@@ -316,7 +316,7 @@
+ 	| alpha-* | alphaev[4-8]-* | alphaev56-* | alphaev6[78]-* \
+ 	| alpha64-* | alpha64ev[4-8]-* | alpha64ev56-* | alpha64ev6[78]-* \
+ 	| alphapca5[67]-* | alpha64pca5[67]-* | arc-* \
+-	| arm-*  | armbe-* | armle-* | armeb-* | armv*-* \
++	| aarch64-* | arm-*  | armbe-* | armle-* | armeb-* | armv*-* \
+ 	| avr-* \
+ 	| bfin-* | bs2000-* \
+ 	| c[123]* | c30-* | [cjt]90-* | c4x-* | c54x-* | c55x-* | c6x-* \
+--- a/srclib/stdio.in.h	2011-08-07 16:42:06.000000000 +0300
++++ b/srclib/stdio.in.h	2017-11-03 18:25:32.021386561 +0200
+@@ -679,6 +679,7 @@
+ # endif
+ #endif
+ 
++#if 0
+ #if @GNULIB_GETS@
+ # if @REPLACE_STDIO_READ_FUNCS@ && @GNULIB_STDIO_H_NONBLOCKING@
+ #  if !(defined __cplusplus && defined GNULIB_NAMESPACE)
+@@ -697,6 +698,7 @@
+    always declared, since it is required by C89.  */
+ _GL_WARN_ON_USE (gets, "gets is a security hole - use fgets instead");
+ #endif
++#endif
+ 
+ 
+ #if @GNULIB_OBSTACK_PRINTF@ || @GNULIB_OBSTACK_PRINTF_POSIX@

@@ -1,0 +1,59 @@
+From 2a5e2ad9871ecdbdc93b43daceb91dd89a137032 Mon Sep 17 00:00:00 2001
+From: Naveen Singh <naveen@nestlabs.com>
+Date: Mon, 30 Oct 2017 23:23:32 +0100
+Subject: [PATCH 07/12] gweb/gresolv.c: Adding android specific code in
+ gresolv.c
+
+Some of the structures are defined differently between glibc and bionic.
+For example struct __res_state is defined in resolv_private.h in bionic
+instead of resolv.h in glibc. __res_state definition is also different
+between bionic and glibc. In glibc, this structure directly contains
+nsaddrs which is an array of pointers of type sockaddr_in6. In bionic
+ipv6 addresses are handled through an extension structure called struct
+__res_state_ext. This commit addresses this difference by approopriately
+accessing the members by using a compile time flag ANDROID_COMPILE which
+is defined in config.h, created by configure process.
+---
+ gweb/gresolv.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
+
+diff --git a/gweb/gresolv.c b/gweb/gresolv.c
+index 8a51a9f6..1b46f628 100644
+--- a/gweb/gresolv.c
++++ b/gweb/gresolv.c
+@@ -38,6 +38,11 @@
+ 
+ #include "gresolv.h"
+ 
++#ifdef ANDROID_COMPILE
++#include <resolv_private.h>
++#include <res_private.h>
++#endif
++
+ struct sort_result {
+ 	int precedence;
+ 	int src_scope;
+@@ -1026,9 +1031,19 @@ guint g_resolv_lookup_hostname(GResolv *resolv, const char *hostname,
+ 			void *sa_addr = &resolv->res.nsaddr_list[i].sin_addr;
+ 
+ 			if (family != AF_INET &&
+-					resolv->res._u._ext.nsaddrs[i]) {
++#ifdef ANDROID_COMPILE
++				&resolv->res._u._ext.ext->nsaddrs[i].sin6
++#else
++				resolv->res._u._ext.nsaddrs[i]
++#endif
++			   )
++			{
+ 				family = AF_INET6;
++#ifdef ANDROID_COMPILE
++				sa_addr = &resolv->res._u._ext.ext->nsaddrs[i].sin6;
++#else
+ 				sa_addr = &resolv->res._u._ext.nsaddrs[i]->sin6_addr;
++#endif
+ 			}
+ 
+ 			if (family != AF_INET && family != AF_INET6)
+-- 
+2.11.0
+

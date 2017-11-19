@@ -1,0 +1,23 @@
+--- a/configure	2016-05-10 12:05:53.000000000 +0300
++++ b/configure	2017-11-07 21:02:56.384484912 +0200
+@@ -5490,6 +5490,12 @@
+     ;;
+ esac
+ 
++case $host in
++  *android*)
++    glib_cv_stack_grows=no
++    glib_cv_uscore=no
++esac
++
+ { $as_echo "$as_me:${as_lineno-$LINENO}: result: $glib_native_win32" >&5
+ $as_echo "$glib_native_win32" >&6; }
+ 
+@@ -22286,6 +22292,7 @@
+         if test "$cross_compiling" = yes; then :
+   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+ $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
++echo $host
+ as_fn_error $? "cannot run test program while cross compiling
+ See \`config.log' for more details" "$LINENO" 5; }
+ else

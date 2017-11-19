@@ -1,0 +1,67 @@
+From ef0834d845499b172f33c09b5533a76ea89c8f7c Mon Sep 17 00:00:00 2001
+From: Naveen Singh <naveen@nestlabs.com>
+Date: Mon, 30 Oct 2017 23:17:53 +0100
+Subject: [PATCH 05/12] Removing the definition of in6_ifreq and in6_pktinfo
+
+Connman header file (gdhcp/common.h) and src/inet.c explicitly
+defines in6_pktinfo and in6_ifreq respectivly. Both of these are
+present in netinet/in.h header file. struct in6_pktinfo is defined under #ifdef
+__USE_GNU in file. define _GNU_SOURCE on top of gdhcp/common.c for this.
+---
+ gdhcp/common.c | 2 +-
+ gdhcp/common.h | 8 --------
+ src/inet.c     | 6 ------
+ 3 files changed, 1 insertion(+), 15 deletions(-)
+
+diff --git a/gdhcp/common.c b/gdhcp/common.c
+index 6f816718..8a159d84 100644
+--- a/gdhcp/common.c
++++ b/gdhcp/common.c
+@@ -17,7 +17,7 @@
+  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+  *
+  */
+-
++#define _GNU_SOURCE
+ #ifdef HAVE_CONFIG_H
+ #include <config.h>
+ #endif
+diff --git a/gdhcp/common.h b/gdhcp/common.h
+index 75abc183..c6927992 100644
+--- a/gdhcp/common.h
++++ b/gdhcp/common.h
+@@ -170,14 +170,6 @@ static const uint8_t dhcp_option_lengths[] = {
+ 	[OPTION_U32]	= 4,
+ };
+ 
+-/* already defined within netinet/in.h if using GNU compiler */
+-#ifndef __USE_GNU
+-struct in6_pktinfo {
+-	struct in6_addr ipi6_addr;  /* src/dst IPv6 address */
+-	unsigned int ipi6_ifindex;  /* send/recv interface index */
+-};
+-#endif
+-
+ uint8_t *dhcp_get_option(struct dhcp_packet *packet, int code);
+ uint8_t *dhcpv6_get_option(struct dhcpv6_packet *packet, uint16_t pkt_len,
+ 			int code, uint16_t *option_len, int *option_count);
+diff --git a/src/inet.c b/src/inet.c
+index b283db89..655f58dc 100644
+--- a/src/inet.c
++++ b/src/inet.c
+@@ -330,12 +330,6 @@ done:
+ 	return err;
+ }
+ 
+-struct in6_ifreq {
+-	struct in6_addr ifr6_addr;
+-	__u32 ifr6_prefixlen;
+-	unsigned int ifr6_ifindex;
+-};
+-
+ int connman_inet_set_ipv6_address(int index,
+ 		struct connman_ipaddress *ipaddress)
+ {
+-- 
+2.11.0
+

@@ -1,0 +1,25 @@
+From d5a26d43e0afbe7ca43be8625b8c99bed89fa2b7 Mon Sep 17 00:00:00 2001
+From: Vitaly Wool <vitaly.wool@konsulko.com>
+Date: Fri, 17 Nov 2017 16:54:22 +0200
+Subject: [PATCH] Do not install to /usr/include by default
+
+---
+ Makefile.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile.in b/Makefile.in
+index 66e5d02..da507a8 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -46,7 +46,7 @@ includedir = $(prefix)/include
+ # so compilers besides gcc can find it by default.
+ # If it is empty or not defined, termcap.h will only be installed in
+ # includedir. 
+-oldincludedir = /usr/include
++oldincludedir =
+ 
+ # Directory in which to install the documentation info files.
+ infodir = $(prefix)/info
+-- 
+2.11.0
+

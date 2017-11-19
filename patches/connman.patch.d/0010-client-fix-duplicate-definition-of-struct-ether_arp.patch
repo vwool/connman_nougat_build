@@ -1,0 +1,41 @@
+From 7d8f35cce9ed73daf5718a6d72dcee0caf7f16d1 Mon Sep 17 00:00:00 2001
+From: Vitaly Wool <vitaly.wool@konsulko.com>
+Date: Fri, 17 Nov 2017 17:14:19 +0200
+Subject: [PATCH 10/12] client: fix duplicate definition of struct ether_arp
+
+Newer versions of NDK have struct ether_arp defined so no need
+to define it under ANDROID_COMPILE, so this bit of Naveen's
+changes has to go.
+---
+ gdhcp/client.c | 15 ---------------
+ 1 file changed, 15 deletions(-)
+
+diff --git a/gdhcp/client.c b/gdhcp/client.c
+index f6148540..3e67fcd5 100644
+--- a/gdhcp/client.c
++++ b/gdhcp/client.c
+@@ -47,21 +47,6 @@
+ #include "common.h"
+ #include "ipv4ll.h"
+ 
+-#ifdef ANDROID_COMPILE
+-struct ether_arp {
+-	struct   arphdr ea_hdr;                 /* fixed-size header */
+-	u_int8_t arp_sha[ETHER_ADDR_LEN];       /* sender hardware address */
+-	u_int8_t arp_spa[4];                    /* sender protocol address */
+-	u_int8_t arp_tha[ETHER_ADDR_LEN];       /* target hardware address */
+-	u_int8_t arp_tpa[4];                    /* target protocol address */
+-} __packed;
+-#define        arp_hrd ea_hdr.ar_hrd
+-#define        arp_pro ea_hdr.ar_pro
+-#define        arp_hln ea_hdr.ar_hln
+-#define        arp_pln ea_hdr.ar_pln
+-#define        arp_op  ea_hdr.ar_op
+-#endif
+-
+ #define DISCOVER_TIMEOUT 5
+ #define DISCOVER_RETRIES 6
+ 
+-- 
+2.11.0
+

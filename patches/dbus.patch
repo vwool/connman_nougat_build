@@ -1,0 +1,11 @@
+--- a/configure	2013-09-05 18:37:15.000000000 +0300
++++ b/configure	2017-11-07 20:22:30.927373464 +0200
+@@ -19896,7 +19896,7 @@
+ ac_res=$ac_cv_search_clock_getres
+ if test "$ac_res" != no; then :
+   test "$ac_res" = "none required" || LIBS="$ac_res $LIBS"
+-  THREAD_LIBS="$THREAD_LIBS -lrt"
++  THREAD_LIBS="$THREAD_LIBS"
+ fi
+ 
+     { $as_echo "$as_me:${as_lineno-$LINENO}: checking for CLOCK_MONOTONIC" >&5

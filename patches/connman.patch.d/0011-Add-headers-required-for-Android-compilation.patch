@@ -1,0 +1,74 @@
+From b3f54b3d64d0db81b65a71d8d65e18f1cbb4dbeb Mon Sep 17 00:00:00 2001
+From: Vitaly Wool <vitaly.wool@konsulko.com>
+Date: Fri, 17 Nov 2017 17:17:42 +0200
+Subject: [PATCH 11/12] Add headers required for Android compilation
+
+Due to only partial Android/Linux compatibility, some extra
+headers that contain structures used in the code have to be added
+in Android case.
+---
+ gdhcp/ipv4ll.c           | 3 +++
+ gsupplicant/supplicant.c | 3 +++
+ src/peer.c               | 3 +++
+ src/rtnl.c               | 3 +++
+ 4 files changed, 12 insertions(+)
+
+diff --git a/gdhcp/ipv4ll.c b/gdhcp/ipv4ll.c
+index d550bf4d..87102ced 100644
+--- a/gdhcp/ipv4ll.c
++++ b/gdhcp/ipv4ll.c
+@@ -33,6 +33,9 @@
+ #include <netpacket/packet.h>
+ #include <net/ethernet.h>
+ #include <netinet/if_ether.h>
++#ifdef ANDROID_COMPILE
++#include <linux/if_arp.h>
++#endif
+ 
+ #include <arpa/inet.h>
+ 
+diff --git a/gsupplicant/supplicant.c b/gsupplicant/supplicant.c
+index 50e4aa63..1b72c9d8 100644
+--- a/gsupplicant/supplicant.c
++++ b/gsupplicant/supplicant.c
+@@ -33,6 +33,9 @@
+ #include <stdbool.h>
+ #include <netinet/if_ether.h>
+ #include <netinet/in.h>
++#ifdef ANDROID_COMPILE
++#include <linux/if_ether.h>
++#endif
+ 
+ #include <glib.h>
+ #include <gdbus.h>
+diff --git a/src/peer.c b/src/peer.c
+index d00c76fe..26cc3172 100644
+--- a/src/peer.c
++++ b/src/peer.c
+@@ -28,6 +28,9 @@
+ #include <gdbus.h>
+ #include <gdhcp/gdhcp.h>
+ #include <netinet/if_ether.h>
++#ifdef ANDROID_COMPILE
++#include <linux/if_ether.h>
++#endif
+ 
+ #include <connman/agent.h>
+ 
+diff --git a/src/rtnl.c b/src/rtnl.c
+index a094e257..4ba2d6fa 100644
+--- a/src/rtnl.c
++++ b/src/rtnl.c
+@@ -37,6 +37,9 @@
+ #include <linux/netlink.h>
+ #include <linux/rtnetlink.h>
+ #include <linux/wireless.h>
++#ifdef ANDROID_COMPILE
++#include <net/ethernet.h>
++#endif
+ 
+ #include <glib.h>
+ 
+-- 
+2.11.0
+
