@@ -7,8 +7,14 @@ if [ -n "$ANDROID_PRODUCT_OUT" ]; then
 	LIBEXPAT_SO=$ANDROID_PRODUCT_OUT/obj/SHARED_LIBRARIES/libexpat_intermediates/PACKED/libexpat.so
 else
 	echo "\$ANDROID_PRODUCT_OUT not set, will use default libraries"
-	LIBXTABLES_A=`pwd`/files/libxtables.a
-	LIBEXPAT_SO=`pwd`/files/libexpat.so
+	if [ "${ANDROID_ARCH}" = "arm64" ]; then
+		LIBXTABLES_A=`pwd`/files/lib64/libxtables.a
+		LIBEXPAT_SO=`pwd`/files/lib64/libexpat.so
+	else
+		LIBXTABLES_A=`pwd`/files/lib/libxtables.a
+		LIBEXPAT_SO=`pwd`/files/lib/libexpat.so
+	fi
+
 fi
 
 export LIBEXPAT_SO
