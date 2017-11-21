@@ -62,7 +62,7 @@ wget https://dbus.freedesktop.org/releases/dbus/dbus-1.6.14.tar.gz || exit 1
 tar xzf dbus-1.6.14.tar.gz || exit 1
 cd dbus-1.6.14
 patch -p1 < ../patches/dbus.patch
-./configure --host=${OLD_TARGET} --prefix=${PREFIX} --with-sysroot=${SYSROOT} --disable-Werror --disable-rt --with-systemdsystemunitdir=/tmp --with-system-socket=/data/misc/dbus/system_bus_socket --with-session-socket-dir=/data/misc/dbus --with-system-pid-file=/data/misc/dbus/pid --with-dbus-user=root || exit 1
+LDFLAGS="$LDFLAGS -pie" ./configure --host=${OLD_TARGET} --prefix=${PREFIX} --with-sysroot=${SYSROOT} --disable-Werror --disable-rt --with-systemdsystemunitdir=/tmp --with-system-socket=/data/misc/dbus/system_bus_socket --with-session-socket-dir=/data/misc/dbus --with-system-pid-file=/data/misc/dbus/pid --with-dbus-user=root || exit 1
 make $EXTRA_MAKE_PARAMS && make install
 )
 
