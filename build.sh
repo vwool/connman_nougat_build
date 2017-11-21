@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source connman-android-env.sh
+source connman-android-arm-env.sh
 
 if [ -n "$ANDROID_PRODUCT_OUT" ]; then
 	LIBXTABLES_A=$ANDROID_PRODUCT_OUT/obj/STATIC_LIBRARIES/libxtables_intermediates/libxtables.a
